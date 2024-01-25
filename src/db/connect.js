@@ -13,7 +13,7 @@ export async function connect() {
         {
             user: process.env.DB_USER,
             host: process.env.DB_HOST,
-            database: process.env.DB_DATABASE,
+            database: process.env.DB_NAME,
             password: process.env.DB_PASSWORD ,
             port: process.env.DB_PORT
         }
@@ -22,7 +22,7 @@ export async function connect() {
     //apenas testando a conexão
     const client = await pool.connect();
     console.log("Criou pool de conexões no PostgreSQL!");
- 
+
     const res = await client.query('SELECT NOW()');
     console.log(res.rows[0]);
     client.release();

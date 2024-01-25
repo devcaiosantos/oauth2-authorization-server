@@ -1,9 +1,17 @@
 import crypto from 'crypto';
 
+export default () => {
+    return {
+        register,
+        getUser,
+        isValidUser,
+    };
+}
+
 const register = async (username, password) => {
     try {
         const shaPass = crypto.createHash('sha256').update(password).digest('hex');
-
+        
         const query = `INSERT INTO users (username, user_password) VALUES ('${username}', '${shaPass}')`;
 
         const response = await global.poolDB.query(query);
@@ -49,4 +57,4 @@ const isValidUser = async (username) => {
 };
 
 
-export { register, getUser, isValidUser };
+

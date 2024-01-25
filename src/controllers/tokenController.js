@@ -1,3 +1,11 @@
+export default () => {
+ 
+    return {
+        getUserIDFromBearerToken,
+        saveAccessToken,
+    };
+}
+
 const saveAccessToken = async (accessToken, userID) => {
     try {
         const saveAccessTokenQuery = `INSERT INTO access_tokens (access_token, user_id) VALUES ('${accessToken}', ${userID})`;
@@ -24,5 +32,3 @@ const getUserIDFromBearerToken = async (bearerToken) => {
         return null;
     }
 };
-
-export { saveAccessToken, getUserIDFromBearerToken };

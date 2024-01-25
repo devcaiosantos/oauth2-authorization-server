@@ -13,11 +13,10 @@ app.oauth = oAuth2Server({
     grants: ["password"],
     debug: true,
 });
-const testAPIService = require("../tests/testAPIService.js");
+
 const testAPIRoutes = require("../tests/testAPIRoutes.js")(
     express.Router(),
-    app,
-    testAPIService
+    app
 );
 // Auth and routes
 const authenticator = require("./auth/authenticator")(userDB);

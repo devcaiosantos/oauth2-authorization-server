@@ -1,18 +1,14 @@
-let userDB;
-let tokenDB;
-
-module.exports = (injectedUserDB, injectedTokenDB) => {
-    userDB = injectedUserDB;
-    tokenDB = injectedTokenDB;
-
+export default (injectedUserDB, injectedTokenDB) => {
+    global.userDB = injectedUserDB;
+    global.tokenDB = injectedTokenDB;
     return {
         getClient,
-        saveAccessToken,
-        getUser,
         grantTypeAllowed,
-        getAccessToken,
-    };
-};
+        getUser,
+        saveAccessToken,
+        getAccessToken
+    }
+}
 
 function getClient(clientID, clientSecret, cbFunc) {
     const client = {
@@ -30,15 +26,15 @@ function grantTypeAllowed(clientID, grantType, cbFunc) {
 }
 
 function getUser(username, password, cbFunc) {
-    userDB.getUser(username, password, cbFunc);
+    global.userDB.getUser(username, password, cbFunc);
 }
 
 function saveAccessToken(accessToken, clientID, expires, user, cbFunc) {
-    tokenDB.saveAccessToken(accessToken, user.id, cbFunc);
+    global.tokenDB.saveAccessToken(accessToken, user.id, cbFunc);
 }
 
 function getAccessToken(bearerToken, cbFunc) {
-    tokenDB.getUserIDFromBearerToken(bearerToken, (userID) => {
+    global.tokenDB.getUserIDFromBearerToken(bearerToken, (userID) => {
         const accessToken = {
             user: {
                 id: userID,

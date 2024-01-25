@@ -1,4 +1,6 @@
 const Pool = require("pg").Pool;
+
+
 function query(queryString, cbFunc) {
   const pool = new Pool({
     user: "postgres",

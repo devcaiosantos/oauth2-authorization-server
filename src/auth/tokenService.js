@@ -25,23 +25,26 @@ function grantTypeAllowed(clientID, grantType, cbFunc) {
     cbFunc(false, true);
 }
 
-function getUser(username, password, cbFunc) {
-    global.userDB.getUser(username, password, cbFunc);
+async function getUser(username, password, cbFunc) {
+    const response = await global.userDB.getUser({username, password});
+    if(!response)cbFunc(true, null);
+    cbFunc(false, response);
 }
 
-function saveAccessToken(accessToken, clientID, expires, user, cbFunc) {
-    global.tokenDB.saveAccessToken(accessToken, user.id, cbFunc);
+async function saveAccessToken(accessToken, clientID, expires, user, cbFunc) {
+    const response = await global.tokenDB.saveAccessToken(accessToken, user.id);
+    
+    if(!response)cbFunc(true, null);
+    cbFunc(false, response);
 }
 
-function getAccessToken(bearerToken, cbFunc) {
-    global.tokenDB.getUserIDFromBearerToken(bearerToken, (userID) => {
-        const accessToken = {
-            user: {
-                id: userID,
-            },
-            expires: null,
-        };
-
-        cbFunc(userID === null, userID === null ? null : accessToken);
+async function getAccessToken(bearerToken, cbFunc) {
+    const response = await global.tokenDB.getUserIDFromBearerToken(bearerToken);
+    if(!response)cbFunc(true, null);
+    cbFunc(false, {
+        user: {
+            id: response,
+        },
+        expires: null
     });
 }

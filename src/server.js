@@ -28,12 +28,8 @@ app.oauth = oAuth2Server({
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(app.oauth.errorHandler());
-app.use("/auth", authRoutes(
-    express.Router(),
-    app,
-    authenticator(userDB())
-));
-app.use("/test", testAPIRoutes);
+app.use("/auth", authRoutes(express.Router(),app,authenticator(userDB())));
+app.use("/test", testAPIRoutes(express.Router(),app));
 const port = 3000;
 app.listen(port, () => {
     console.log(`listening on port ${port}`);

@@ -8,40 +8,30 @@ export default (injectedUserDB) => {
     };
 };
 
-function registerUser(req, res) {
-    const isValidUser = global.userDB.isValidUser(req.body.username);
+async function registerUser(req, res) {
+    const isValidUser = await global.userDB.isValidUser(req.body.username);
+    
     if(!isValidUser){
-        sendResponse(res, "Usuário inválido", true);
+        res.status(400).json({
+            message: "Invalid user"
+        });
         return;
     }
-    global.userDB.isValidUser(req.body.username, async (error, isValidUser) => {
-        if (error || !isValidUser) {
-            const message = error
-                ? "Something went wrong!"
-                : "This user already exists!";
 
-            sendResponse(res, message, error);
+    const response = await global.userDB.register({username: req.body.username, password: req.body.password});
+    
+    if(!response){
+        res.status(500).json({
+            message: "Error registering user"
+        });
+        return;
+    }
 
-            return;
-        }
-
-        const response = await global.userDB.register(req.body.username, req.body.password);
-        if(response){
-            sendResponse(
-                res,
-                response.error === undefined ? "Success!!" : "Something went wrong!",
-                response.error
-            );
-        }
-
+    res.status(200).json({
+        message: "User registered"
     });
+    return;
+    
 }
 
 function login(query, res) {}
-
-function sendResponse(res, message, error) {
-    res.status(error !== undefined ? 400 : 200).json({
-        message: message,
-        error: error,
-    });
-}

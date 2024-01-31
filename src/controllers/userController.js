@@ -1,14 +1,8 @@
 import crypto from 'crypto';
 
-export default () => {
-    return {
-        register,
-        getUser,
-        isValidUser,
-    };
-}
 
-const register = async ({username, password}) => {
+
+export const register = async ({username, password}) => {
     try {
         const shaPass = crypto.createHash('sha256').update(password).digest('hex');
         
@@ -22,7 +16,7 @@ const register = async ({username, password}) => {
     }
 };
 
-const getUser = async ({username, password}) => {
+export const getUserFromDB = async ({username, password}) => {
     try {
         const shaPass = crypto.createHash('sha256').update(password).digest('hex');
 
@@ -39,7 +33,7 @@ const getUser = async ({username, password}) => {
     }
 };
 
-const isValidUser = async (username) => {
+export const isValidUser = async (username) => {
     try {
         const query = `SELECT * FROM users WHERE username = '${username}'`;
 

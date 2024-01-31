@@ -1,11 +1,5 @@
-export default () => {
-    return {
-        getUserIDFromBearerToken,
-        saveAccessToken,
-    };
-}
 
-const saveAccessToken = async (accessToken, userID) => {
+export const saveAccessTokenOnDB = async (accessToken, userID) => {
     try {
         const saveAccessTokenQuery = `INSERT INTO access_tokens (access_token, user_id) VALUES ('${accessToken}', ${userID})`;
         const response = await global.poolDB.query(saveAccessTokenQuery);
@@ -16,7 +10,7 @@ const saveAccessToken = async (accessToken, userID) => {
     }
 };
 
-const getUserIDFromBearerToken = async (bearerToken) => {
+export const getUserIDFromBearerToken = async (bearerToken) => {
     try {
         const getUserIDQuery = `SELECT * FROM access_tokens WHERE access_token = '${bearerToken}'`;
 

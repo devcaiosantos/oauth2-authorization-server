@@ -1,24 +1,16 @@
 
+import {isValidUser, register } from "../controllers/userController.js";
+ 
+export async function registerUser(req, res) {
 
-export default (injectedUserDB) => {
-    global.userDB = injectedUserDB;
-    return {
-        registerUser,
-        login,
-    };
-};
-
-async function registerUser(req, res) {
-    const isValidUser = await global.userDB.isValidUser(req.body.username);
-    
-    if(!isValidUser){
+    if(!await isValidUser(req.body.username)){
         res.status(400).json({
             message: "Invalid user"
         });
         return;
     }
 
-    const response = await global.userDB.register({username: req.body.username, password: req.body.password});
+    const response = await register({username: req.body.username, password: req.body.password});
     
     if(!response){
         res.status(500).json({
@@ -34,4 +26,4 @@ async function registerUser(req, res) {
     
 }
 
-function login(query, res) {}
+export function login(query, res) {}

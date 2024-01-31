@@ -1,6 +1,7 @@
-export default (injectedUserDB, injectedTokenDB) => {
-    global.userDB = injectedUserDB;
-    global.tokenDB = injectedTokenDB;
+import {getUserFromDB} from '../controllers/userController.js';
+import {saveAccessTokenOnDB, getUserIDFromBearerToken, } from '../controllers/tokenController.js';
+
+export default () => {
     return {
         getClient,
         grantTypeAllowed,
@@ -26,20 +27,20 @@ function grantTypeAllowed(clientID, grantType, cbFunc) {
 }
 
 async function getUser(username, password, cbFunc) {
-    const response = await global.userDB.getUser({username, password});
+    const response = await getUserFromDB({username, password});
     if(!response)cbFunc(true, null);
     cbFunc(false, response);
 }
 
 async function saveAccessToken(accessToken, clientID, expires, user, cbFunc) {
-    const response = await global.tokenDB.saveAccessToken(accessToken, user.id);
+    const response = await saveAccessTokenOnDB(accessToken, user.id);
     
     if(!response)cbFunc(true, null);
     cbFunc(false, response);
 }
 
 async function getAccessToken(bearerToken, cbFunc) {
-    const response = await global.tokenDB.getUserIDFromBearerToken(bearerToken);
+    const response = await getUserIDFromBearerToken(bearerToken);
     if(!response)cbFunc(true, null);
     cbFunc(false, {
         user: {

@@ -1,9 +1,9 @@
 import { login, registerUser } from "../auth/authenticator.js";
 
-export default (router, app) => {
+export default (router, oauth) => {
 
     router.post("/register", registerUser);
-    router.post("/login", app.oauth.grant(), login);
+    router.post("/login", oauth.grant(), login);
 
     return router;
 };

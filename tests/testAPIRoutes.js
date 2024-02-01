@@ -1,6 +1,6 @@
-export default (router, app) => {
+export default (router, oauth) => {
     router.post("/hello", 
-        app.oauth.authorise(),
+        oauth.authorise(),
         function helloWorld(req, res) {
             res.send("Hello World OAuth2!");
         }
